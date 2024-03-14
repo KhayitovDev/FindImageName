@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Page</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+      body {
+        background-color: black;
+      }
+      h3 {
+        color: yellow;
+      }
+
+      .image-container {
+        width: 300px;
+        height: 300px;
+        border: 6px solid yellow;
+        /* border-radius: 50%; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: cover;
+      }
+      .form {
+        text-align: center;
+      }
+      input {
+        text-align: center;
+        width: 300px;
+        height: 40px;
+        background-color: rgba(14, 78, 78, 0.096);
+        color: yellow;
+        border: 1px solid yellow;
+        border-radius: 5%;
+      }
+      #feedback {
+        text-align: center;
+        font-weight: bold;
+        font-size: 20px;
+        font-family: "Times New Roman", Times, serif;
+      }
+
+      .btn {
+        width: 300px;
+      }
+
+     .text-center a{
+       text-decoration: none;
+       color: red;
+     }
+    </style>
+  </head>
+  <body>
+    <div class="text-center">
+        <a href="{% url 'languages' %}"
+          >CHANGE THE LANGUAGE</a
+        >
+      </div>
+    <div class="container">
+      {% if language_id == 'en' %}
+      <h3 class="text-center mt-5 mb-4">What's the name of the image?</h3>
+      {% elif language_id == 'it' %}
+      <h3 class="text-center mt-5 mb-4">Qual è il nome dell'immagine?</h3>
+      {% elif language_id == 'ru' %}
+      <h3 class="text-center mt-5 mb-4">Как называется изображение?</h3>
+      {% elif language_id == 'tr' %}
+      <h3 class="text-center mt-5 mb-4">Resmin adı ne?</h3>
+      {% elif language_id == 'uz' %}
+      <h3 class="text-center mt-5 mb-4">Rasmning nomi nima?</h3>
+      {% else %}
+      <h3 class="text-center mt-5 mb-4">What's the name of the image?</h3>
+      {% endif %}
+      
+     
+      <div class="image-container mx-auto mb-4">
+        <img
+          src="{{ image_data.image.url }}"
+          alt="Random Image"
+          class="img-fluid"
+        />
+      </div>
+      <div class="form">
+        <form action="" method="post" id="answerForm">
+          {% csrf_token %}
+          <input
+            type="text"
+            name="inputField"
+            placeholder="Enter your answer"
+          /> 
+          <br>
+          <br>
+          <button type="submit" class="btn btn-primary">
+            CHECK YOUR ANSWER
+          </button>
+        </form>
+        <br />
+        <form method="get" id="nextImageForm">
+          <button claas="btn" type="submit" class="btn btn-danger">
+            NEXT IMAGE
+          </button>
+        </form>
+  
+         <div id="feedback" class="mt-3 feedback"></div>
+      </div>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const languageId = "{{ language_id }}";
+      let correctMessage, incorrectMessage;
+
+      switch (languageId) {
+        case "en":
+          correctMessage = "Correct!";
+          incorrectMessage = "Incorrect. Try again!";
+          break;
+        case "it":
+          correctMessage = "Corretto!";
+          incorrectMessage = "Sbagliato. Prova di nuovo!";
+          break;
+        case "ru":
+          correctMessage = "Верно!";
+          incorrectMessage = "Неправильно. Попробуйте снова!";
+          break;
+        case "tr":
+          correctMessage = "Doğru!";
+          incorrectMessage = "Yanlış. Tekrar dene!";
+          break;
+        case "uz":
+          correctMessage = "To'g'ri!";
+          incorrectMessage = "Noto‘g‘ri. Qaytadan urinib ko‘ring!";
+          break;
+        default:
+          correctMessage = "Correct!";
+          incorrectMessage = "Incorrect. Try again!";
+      }
+      document
+        .getElementById("answerForm")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const userAnswer =
+            document.getElementById("answerForm").elements["inputField"].value;
+          const correctAnswer = "{{ image_data.correct_answer_field }}";
+          const feedbackElement = document.getElementById("feedback");
+          if (
+            userAnswer.trim().toLowerCase() ===
+            correctAnswer.trim().toLowerCase()
+          ) {
+            feedbackElement.textContent = correctMessage;
+            feedbackElement.style.color = "blue";
+            await getNextImage();
+          } else {
+            feedbackElement.textContent = incorrectMessage;
+            feedbackElement.style.color = "red";
+          }
+        });
+    </script>
+  </body>
+</html>
