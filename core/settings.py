@@ -32,16 +32,12 @@ INSTALLED_APPS = [
     #local apps
     'image_name',
 
-    #third party apps
-    'rest_framework',
-    'drf_yasg',
-    "corsheaders",
+ 
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -51,27 +47,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_METHODS = (
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-)
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',  # for localhost (REACT Default)
-    'http://192.168.0.50:3000',  # for network
-    'http://localhost:8080',  # for localhost (Developlemt)
-    'http://192.168.0.50:8080',  # for network (Development)
-)
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',  # for localhost (REACT Default)
-    'http://192.168.0.50:3000',  # for network
-    'http://localhost:8080',  # for localhost (Developlemt)
-    'http://192.168.0.50:8080',  # for network (Development)
-]
 
 TEMPLATES = [
     {

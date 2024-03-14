@@ -1,8 +1,5 @@
-from rest_framework import viewsets
-from rest_framework.response import Response
+
 from .models import Languages, ImageGame
-from .serializers import LanguageSerializer, ImageGameSerializer
-from rest_framework.generics import ListAPIView, RetrieveAPIView
 from django.views.generic import TemplateView
 from django.shortcuts import render
 from django.http import JsonResponse
